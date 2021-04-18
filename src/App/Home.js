@@ -11,9 +11,8 @@ const HomeScreen = () => {
 
   }, [])
   const takeScreenShot = () => {
-    chrome.runtime.sendMessage(chrome.runtime.id, {
-      from: "popup",
-      subject: "Capture",
+    chrome.runtime.sendMessage({
+      from: "cs-take"
     });
   }
   return (
