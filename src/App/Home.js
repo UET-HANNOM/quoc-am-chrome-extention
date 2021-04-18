@@ -1,20 +1,16 @@
- /*global chrome*/
-import React, { useEffect, useState } from "react";
+/*global chrome*/
+import React, { useEffect } from "react";
 import photoIcon from "./icons/photo.svg";
 import screenshotIcon from "./icons/screenshot.svg";
 const HomeScreen = () => {
-  const [state, setState] = useState()
-  useEffect(() => {
-    chrome.runtime.onMessage.addListener((req, sender, res) => {
-      setState(req)
-    });
-
-  }, [])
   const takeScreenShot = () => {
     chrome.runtime.sendMessage({
-      from: "cs-take"
+      from: "cs-take",
     });
-  }
+  };
+  useEffect(() => {
+    console.log(1,window.mesdmm)
+  }, [])
   return (
     <div className="cs-home">
       <div className="cs-home-cap">
@@ -22,7 +18,7 @@ const HomeScreen = () => {
           <img src={screenshotIcon} alt="icon" />
         </button>
       </div>
-      {JSON.stringify(state)}
+      {JSON.stringify(window.mesdmm)}
       <hr />
       <div className="cs-home-up">
         <button>

@@ -28,7 +28,10 @@ function cropData(str, coords, callback) {
       coords.w,
       coords.h
     );
-
+    alert("Đ")
+    chrome.tabs.getSelected(null, (tab) => {
+      sendMessage({ type: "cs-save-file-222" }, tab);
+    });
     callback({ dataUri: canvas.toDataURL() });
   };
 
@@ -39,13 +42,15 @@ function capture(coords) {
   chrome.tabs.captureVisibleTab(null, { format: "png" }, function (data) {
     cropData(data, coords, function (data) {
       console.log("Done");
-      saveFile(data.dataUri);
+      chrome.tabs.getSelected(null, (tab) => {
+        sendMessage({ type: "cs-save-file" }, tab);
+      });
+      // saveFile(data.dataUri);
     });
   });
 }
 chrome.runtime.onMessage.addListener(function (res) {
     if(res.from === "cs-take"){
-        alert("dmcd")
         chrome.tabs.getSelected(null, (tab) => {
             contentURL = tab.url;
             sendMessage({ type: "start-screenshots" }, tab);

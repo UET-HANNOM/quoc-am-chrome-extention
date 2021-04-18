@@ -1,6 +1,17 @@
 // 
 // messages
 //
+chrome.runtime.onMessage.addListener((message) => {
+	console.log(message)
+	// switch (message.type) {
+	//   case "SNOW_STATUS":
+	//     setSnowing(message.snowing);
+	//     break;
+	//   default:
+	//     break;
+	// }
+	window.mesdmm = message;
+  });
 chrome.runtime.onMessage.addListener(gotMessage);
  
 function gotMessage(request, sender, sendResponse) {
