@@ -1,4 +1,3 @@
- /*global chrome*/
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './App/styles/index.scss';
