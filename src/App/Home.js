@@ -10,6 +10,7 @@ const HomeScreen = () => {
   const [preview, setPreview] = useState(false);
   const [text, setText] = useState("");
   const [history, setHistory] = useState(false);
+  const [loading, setLoading] = useState(false);
   const _onChange = (e) => {
     var file = e.target.files[0];
     var reader = new FileReader();
@@ -36,11 +37,28 @@ const HomeScreen = () => {
     setTab(1);
   };
   const handleScan = () => {
-    setText(` Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, eveniet
-repudiandae? Ullam, possimus ad doloribus neque cupiditate, amet
-accusantium officia tenetur illo harum, nihil impedit cumque voluptate
-nam eius libero.`);
-    setTab(3);
+    setLoading(true);
+    debugger;
+    fetch("https://quoc-am-server.herokuapp.com/sampleData", {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: "" }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        debugger;
+
+        setText(data);
+        setTab(3);
+        console.log("Success:", data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      })
+      .finally(() => setLoading(false));
   };
   const openHistory = () => {
     setHistory(true);
@@ -82,21 +100,13 @@ nam eius libero.`);
             onClick={goHome}
           />
           <img src={image} alt="" />
-          <button onClick={handleScan}>Scan</button>
+          <button onClick={handleScan} disabled={loading}>
+            Scan<div class="loader" hidden={!loading}></div>
+          </button>
         </div>
       );
     case 3:
-      return (
-        <div className="cs-view-result">
-          <img
-            src={cancelIcon}
-            alt=""
-            className="cs-icon-top"
-            onClick={goHome}
-          />
-          <p>{text}</p>
-        </div>
-      );
+      return <ViewResult data={text} image={image} goHome={goHome} />;
     case 4:
       return (
         <div className="cs-history">
@@ -119,3 +129,53 @@ nam eius libero.`);
 };
 
 export default HomeScreen;
+const ViewResult = ({ goHome, data, image }) => {
+  function openCity(e=null, cityName) {
+    var i;
+    var x = document.getElementsByClassName("cs-result-text");
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+    }
+    var y = document.getElementsByClassName("cs-bar-item");
+    for (i = 0; i < y.length; i++) {
+      y[i].style.opacity = 0.5;
+    }
+    e.target.style.opacity = 1
+    document.getElementById(cityName).style.display = "block";
+  }
+  return (
+    <div className="cs-view-result">
+      <img src={cancelIcon} alt="" className="cs-icon-top" onClick={goHome} />
+      <div>
+        <div className="cs-bar">
+          <button
+            className="cs-bar-item"
+            onClick={(e) => openCity(e,"van-ban-dich")}
+          >
+            Văn bản dịch
+          </button>
+          <button
+            className="cs-bar-item"
+            onClick={(e) => openCity(e,"van-ban-goc")}
+          >
+            Văn bản gốc
+          </button>
+          <button className="cs-bar-item" onClick={(e) => openCity(e,"anh-goc")}>
+            Ảnh gốc
+          </button>
+        </div>
+        <div id="van-ban-dich" className="cs-result-text">
+          <p>{data.text1}</p>
+        </div>
+
+        <div id="van-ban-goc" className="cs-result-text" style={{ display: "none" }}>
+          <p>{data.text2}</p>
+        </div>
+
+        <div id="anh-goc" className="cs-result-text" style={{ display: "none" }}>
+          <img src={image} alt="" />
+        </div>
+      </div>
+    </div>
+  );
+};
