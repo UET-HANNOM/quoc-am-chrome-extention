@@ -41,6 +41,7 @@ function sendMessage(msg) {
 	document.body.style.cursor = 'default';
 
 	console.log('sending message with screenshoot');
+	chrome.runtime.sendMessage("dmm");
 	chrome.runtime.sendMessage(msg, function(response) {});
 };
  

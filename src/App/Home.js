@@ -11,6 +11,7 @@ const HomeScreen = () => {
   const [text, setText] = useState("");
   const [history, setHistory] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [state, setState] = useState()
   const _onChange = (e) => {
     var file = e.target.files[0];
     var reader = new FileReader();
@@ -29,7 +30,11 @@ const HomeScreen = () => {
     });
   };
   useEffect(() => {
-    console.log(1, window.mesdmm);
+    chrome.runtime.onMessage.addListener(function (res) {
+      console.log(res)
+      setState(res)
+      alert(res);
+    });
   }, []);
   const goHome = () => {
     setPreview(false);
@@ -77,7 +82,7 @@ const HomeScreen = () => {
           <img src={screenshotIcon} alt="icon" />
         </button>
       </div>
-      {JSON.stringify(window.mesdmm)}
+      {JSON.stringify(state)}
       <hr />
       <div className="cs-home-up">
         <label htmlFor="img">
@@ -130,7 +135,7 @@ const HomeScreen = () => {
 
 export default HomeScreen;
 const ViewResult = ({ goHome, data, image }) => {
-  function openCity(e=null, cityName) {
+  function openCity(e = null, cityName) {
     var i;
     var x = document.getElementsByClassName("cs-result-text");
     for (i = 0; i < x.length; i++) {
@@ -140,7 +145,7 @@ const ViewResult = ({ goHome, data, image }) => {
     for (i = 0; i < y.length; i++) {
       y[i].style.opacity = 0.5;
     }
-    e.target.style.opacity = 1
+    e.target.style.opacity = 1;
     document.getElementById(cityName).style.display = "block";
   }
   return (
@@ -150,17 +155,20 @@ const ViewResult = ({ goHome, data, image }) => {
         <div className="cs-bar">
           <button
             className="cs-bar-item"
-            onClick={(e) => openCity(e,"van-ban-dich")}
+            onClick={(e) => openCity(e, "van-ban-dich")}
           >
             Văn bản dịch
           </button>
           <button
             className="cs-bar-item"
-            onClick={(e) => openCity(e,"van-ban-goc")}
+            onClick={(e) => openCity(e, "van-ban-goc")}
           >
             Văn bản gốc
           </button>
-          <button className="cs-bar-item" onClick={(e) => openCity(e,"anh-goc")}>
+          <button
+            className="cs-bar-item"
+            onClick={(e) => openCity(e, "anh-goc")}
+          >
             Ảnh gốc
           </button>
         </div>
@@ -168,11 +176,19 @@ const ViewResult = ({ goHome, data, image }) => {
           <p>{data.text1}</p>
         </div>
 
-        <div id="van-ban-goc" className="cs-result-text" style={{ display: "none" }}>
+        <div
+          id="van-ban-goc"
+          className="cs-result-text"
+          style={{ display: "none" }}
+        >
           <p>{data.text2}</p>
         </div>
 
-        <div id="anh-goc" className="cs-result-text" style={{ display: "none" }}>
+        <div
+          id="anh-goc"
+          className="cs-result-text"
+          style={{ display: "none" }}
+        >
           <img src={image} alt="" />
         </div>
       </div>

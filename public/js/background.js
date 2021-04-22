@@ -28,7 +28,6 @@ function cropData(str, coords, callback) {
       coords.w,
       coords.h
     );
-    alert("Đ")
     chrome.tabs.getSelected(null, (tab) => {
       sendMessage({ type: "cs-save-file-222" }, tab);
     });
@@ -42,21 +41,20 @@ function capture(coords) {
   chrome.tabs.captureVisibleTab(null, { format: "png" }, function (data) {
     cropData(data, coords, function (data) {
       console.log("Done");
-      chrome.tabs.getSelected(null, (tab) => {
-        sendMessage({ type: "cs-save-file" }, tab);
-      });
-      // saveFile(data.dataUri);
+      // chrome.tabs.getSelected(null, (tab) => {
+      //   sendMessage({ type: "cs-save-file" }, tab);
+      // });
+      saveFile(data.dataUri);
     });
   });
 }
 chrome.runtime.onMessage.addListener(function (res) {
-    if(res.from === "cs-take"){
-        chrome.tabs.getSelected(null, (tab) => {
-            contentURL = tab.url;
-            sendMessage({ type: "start-screenshots" }, tab);
-          });
-    }
- 
+  if (res.from === "cs-take") {
+    chrome.tabs.getSelected(null, (tab) => {
+      contentURL = tab.url;
+      sendMessage({ type: "start-screenshots" }, tab);
+    });
+  }
 });
 
 chrome.browserAction.onClicked.addListener(function (tab) {
@@ -75,7 +73,8 @@ function gotMessage(request, sender, sendResponse) {
 
 function sendMessage(msg, tab) {
   console.log("sending message");
-
+  browser.runtime.sendMessage({ url: "dmm" });
+  chrome.runtime.sendMessage({ url: "dmm" });
   chrome.tabs.sendMessage(tab.id, msg, function (response) {});
 }
 
