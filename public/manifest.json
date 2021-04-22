@@ -1,23 +1,18 @@
 {
   "manifest_version": 2,
-  "name": "Screenshot Capture",
-  "version": "2.0",
-  "description": "Screenshot Capture",
+  "name": "UET Hán-Nôm",
+  "version": "0.01",
+  "description": "UET Hán-Nôm",
 
   "browser_action": {
     "default_popup": "index.html",
-    "default_icon": {
-      "19": "/images/icon19.png",
-      "38": "/images/icon38.png"
-    },
-    "default_title": "Screenshot Capture"
+    "default_title": "UET Hán-Nôm"
   },
-
+  "options_page": "/content/options.html",
   "background": {
     "scripts": ["background/background.js"],
     "persistent": false
   },
-
   "web_accessible_resources": ["/images/Jcrop.gif", "/images/pixel.png"],
 
   "commands": {
@@ -29,11 +24,5 @@
     }
   },
 
-  "icons": {
-    "16": "images/icon16.png",
-    "48": "images/icon48.png",
-    "128": "images/icon128.png"
-  },
-
-  "permissions": ["storage", "activeTab"]
+  "permissions": ["storage", "activeTab", "tabs"]
 }

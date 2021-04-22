@@ -4,6 +4,14 @@ import photoIcon from "./icons/photo.svg";
 import screenshotIcon from "./icons/screenshot.svg";
 import cancelIcon from "./icons/cancel.svg";
 import historyIcon from "./icons/history.svg";
+chrome.storage.sync.get((config) => {
+  // alert("....")
+  // state.method.forEach((item) => item.checked = item.id === config.method)
+  // state.format.forEach((item) => item.checked = item.id === config.format)
+  // state.save.forEach((item) => item.checked = item.id === config.save)
+  // state.dpr.forEach((item) => item.checked = item.id === config.dpr)
+  // m.redraw()
+})
 const HomeScreen = () => {
   const [tab, setTab] = useState(1);
   const [image, setImage] = useState("");
@@ -30,11 +38,11 @@ const HomeScreen = () => {
     });
   };
   useEffect(() => {
-    chrome.runtime.onMessage.addListener(function (res) {
-      console.log(res)
-      setState(res)
-      alert(res);
-    });
+    // chrome.runtime.onMessage.addListener(function (res) {
+    //   console.log(res)
+    //   setState(res)
+    //   alert(res);
+    // });
   }, []);
   const goHome = () => {
     setPreview(false);

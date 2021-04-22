@@ -94,10 +94,14 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
                   config.dpr,
                   config.format,
                   (cropped) => {
+                    // chrome.storage.sync.set({ img: cropped });
+                    // chrome.runtime.openOptionsPage()
                     res({ message: "image", image: cropped });
                   }
                 );
               } else {
+                // chrome.storage.sync.set({ img: image });
+                // chrome.runtime.openOptionsPage()
                 res({ message: "image", image: image });
               }
             } else {
@@ -108,6 +112,8 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
                 config.dpr,
                 config.format,
                 (cropped) => {
+                  // chrome.storage.sync.set({ img: cropped });
+                  // chrome.runtime.openOptionsPage()
                   res({ message: "image", image: cropped });
                 }
               );

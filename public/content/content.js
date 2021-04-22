@@ -75,11 +75,11 @@ var capture = (force) => {
                 console.log(response);
               }
             );
-            chrome.runtime.sendMessage(res.image);
+            callScan(res.image)
             overlay(false);
             selection = null;
 
-            save(res.image, config.format, config.save);
+            // save(res.image, config.format, config.save);
           }
         );
       }, 50);
@@ -97,6 +97,7 @@ var capture = (force) => {
               console.log(response);
             }
           );
+          callScan(res.image)
           chrome.runtime.sendMessage(res.image);
           overlay(false);
           save(res.image, config.format, config.save);
@@ -105,7 +106,24 @@ var capture = (force) => {
     }
   });
 };
-
+var callScan = (image) => {
+  fetch("https://quoc-am-server.herokuapp.com/sampleData", {
+    method: "POST", // or 'PUT'
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ data: "" }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      alert(data.text1);
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(() => setLoading(false));
+};
 var filename = (format) => {
   var pad = (n) => ((n = n + ""), n.length >= 2 ? n : `0${n}`);
   var ext = (format) =>
